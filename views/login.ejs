@@ -1,0 +1,19 @@
+<%- include('partials/header.ejs'); %>
+<body class="initial">
+	<%- include('partials/navbar.ejs'); %>
+	<div class="container home">
+	<div class="container col-md-4">
+		<div class="card-body">
+			<form method="POST" action="/register">
+				<% if(message.length > 0) { %>
+					<div class="alert alert-success text-center" role="alert"> <%= message %> </div>
+				<% } %>		
+				<input class="form-control margin" type="email" name="email" placeholder="Seu e-mail">
+				<input class="form-control margin" type="password" placeholder="Deixe sua mensagem" name="password" id="article">
+				<button class="btn btn-primary margin" type="submit">Enviar</button>
+			</form>
+		</div>
+	</div>
+	</form>
+</body>
+<%- include('partials/footer.ejs'); %>

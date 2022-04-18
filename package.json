@@ -1,0 +1,40 @@
+{
+  "name": "cidadenostra",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node src/server",
+    "test": "NODE_ENV=test jest --detectOpenHandles --forceExit --unhandled-rejections=strict"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "*",
+    "ajv-formats": "*",
+    "bcrypt": "*",
+    "connect-flash": "*",
+    "cookie-parser": "*",
+    "dotenv": "*",
+    "ejs": "*",
+    "express": "*",
+    "express-session": "*",
+    "md5": "*",
+    "mongodb": "*",
+    "nanoid": "*"
+  },
+  "devDependencies": {
+    "eslint": "*",
+    "eslint-config-airbnb-base": "*",
+    "eslint-config-prettier": "*",
+    "eslint-plugin-import": "*",
+    "eslint-plugin-jest": "*",
+    "eslint-plugin-jest-formatting": "*",
+    "eslint-plugin-prettier": "*",
+    "jest": "^25.1.0",
+    "nodemon": "*",
+    "prettier": "*",
+    "superagent-defaults": "*",
+    "supertest": "^6.1.3"
+  }
+}
