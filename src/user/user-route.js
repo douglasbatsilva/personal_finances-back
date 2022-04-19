@@ -3,18 +3,18 @@ const service = require("./user-service");
 function UserRoute(app) {
   app.routes
     .get("/register", async (req, res) => {
-      res.render("register.ejs", { message: req.flash("notify") });
+      res.render("register.ejs", { notify: req.flash("notify") });
     })
 
     .post("/signup", async (req, res) => {
       const result = await service.signup(req.body);
       if (result.status === 200) {
         //await res.redirect("/");
-        return res.status(result.status).json(result.message);
+        return res.status(result.status).json({message: result.message});
       }
       req.flash("notify", result.message);
       //await res.redirect("/register");
-      return res.status(result.status).json(result.message);
+      return res.status(result.status).json({message: result.message});
     })
 
     .post("/login", async (req, res) => {
@@ -23,8 +23,9 @@ function UserRoute(app) {
     })
 
     .post("/delete", async (req, res) => {
-      const result = await service.delete(req.body);
-      return res.status(200).json({message: "DELETADO"});
+      const body = { ...req.body, isAdmin: req.headers.isadmin}
+      const result = await service.delete(body);
+      return res.status(result.status).json({message: result.message});
     });
 
   return app.routes;

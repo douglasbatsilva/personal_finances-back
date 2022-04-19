@@ -5,8 +5,8 @@
 	<div class="container col-md-4">
 		<div class="card-body">
 			<form method="POST" action="/register">
-				<% if(message.length > 0) { %>
-					<div class="alert alert-success text-center" role="alert"> <%= message %> </div>
+				<% if(notify.length > 0) { %>
+					<div class="alert alert-success text-center" role="alert"> <%= notify %> </div>
 				<% } %>		
 				<input class="form-control margin" type="email" name="email" placeholder="Seu e-mail">
 				<input class="form-control margin" type="password" placeholder="Deixe sua mensagem" name="password" id="article">
