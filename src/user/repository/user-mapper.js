@@ -1,8 +1,7 @@
-
 const baseMapper = require("../../common/baseMapper");
 
-class UserMapper extends baseMapper{
-  constructor(){
+class UserMapper extends baseMapper {
+  constructor() {
     super("users");
   }
 }

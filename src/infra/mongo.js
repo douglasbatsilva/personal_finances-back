@@ -1,6 +1,7 @@
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
-const DB_NAME = process.env.DB_NAME;
+
+const { DB_NAME } = process.env;
 let client;
 
 class ManageDB {

@@ -5,8 +5,9 @@ const UserMapper = require("./repository/user-mapper");
 const { userRegisterSchema, userLoginSchema } = require("./user-request");
 
 class UserService extends BaseService {
-  async signup(body) {
-    let result = await this.validateRegistrationData(body);
+  async signup(bodyParam) {
+    const body = bodyParam;
+    const result = await this.validateRegistrationData(body);
     if (result.isValid) {
       body._id = nanoid(15);
       body.password = md5(body.password);
@@ -24,18 +25,17 @@ class UserService extends BaseService {
 
   async validateRegistrationData(body) {
     const { email, userName, password, rePassword } = body;
-    let response = { isValid: true };
+    const response = { isValid: true };
 
     const valid = this.validate(userRegisterSchema, body);
     if (valid !== true) {
       return {
-        status: 400,
         message: `The field ${valid[0].instancePath} ${valid[0].message}`,
       };
     }
 
     if (password !== rePassword) {
-      return (response = { message: "Passwords do not match", isValid: false });
+      return { message: "Passwords do not match", isValid: false };
     }
 
     const existsLoginData = await this.searchUserByEmailOrUserName(
@@ -43,7 +43,7 @@ class UserService extends BaseService {
       userName
     );
     if (existsLoginData) {
-      return (response = { ...existsLoginData, isValid: false });
+      return { ...existsLoginData, isValid: false };
     }
 
     return response;
@@ -52,12 +52,12 @@ class UserService extends BaseService {
   async searchUserByEmailOrUserName(email, userName) {
     const existsUserName = await UserMapper.find({ userName });
     if (existsUserName.length > 0) {
-      return { message: "User name already exists" };
+      return { message: "This user name already exists" };
     }
 
     const existsEmail = await UserMapper.find({ email });
     if (existsEmail.length > 0) {
-      return { message: "Email already exists" };
+      return { message: "This user email already exists" };
     }
 
     return false;
@@ -69,14 +69,13 @@ class UserService extends BaseService {
       return { message: result.message, status: 200, id: result.id };
     }
 
-    return { message: result.message, status: 400 };
+    return { message: result.message, status: result.status || 400 };
   }
 
   async validateLoginData(body) {
     const valid = this.validate(userLoginSchema, body);
     if (valid !== true) {
       return {
-        status: 400,
         message: `The field ${valid[0].instancePath} ${valid[0].message}`,
       };
     }
@@ -91,7 +90,7 @@ class UserService extends BaseService {
     const query = { $or: [{ email: user }, { userName: user }] };
     const existisUser = await UserMapper.find(query);
     if (existisUser.length === 0) {
-      return { message: "User not found", isValid: false };
+      return { message: "User not found", isValid: false, status: 404 };
     }
 
     const passwordHash = md5(password);

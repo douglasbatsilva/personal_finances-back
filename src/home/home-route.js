@@ -1,14 +1,13 @@
-const { nanoid } = require("nanoid");
-const service = require("./home-service");
+const baseRoute = require("../common/baseRoute");
 
-function registerRoute(app) {
+function HomeRoute(app) {
   app.routes
     .get("/", async (req, res) => {
-      res.render("index.ejs", { message: req.flash("notify") });
+      await res.render("index.ejs");
     });
   return app.routes;
 }
 
 module.exports = (app) => {
-  return registerRoute(app);
+  return HomeRoute(app);
 };

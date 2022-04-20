@@ -1,9 +1,9 @@
 const express = require("express");
-const ManageDB = require("./infra/mongo");
 const { Router } = require("express");
 const session = require("express-session");
 const flash = require("connect-flash");
 const cookieParser = require("cookie-parser");
+const ManageDB = require("./infra/mongo");
 
 class Server {
   constructor() {
@@ -41,8 +41,8 @@ class Server {
 
   routes() {
     this.app.routes = new Router();
-    this.app.use("/", require("./home/home-route")(this.app));
     this.app.use("/", require("./user/user-route")(this.app));
+    this.app.use("/", require("./home/home-route")(this.app));
   }
 }
 

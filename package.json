@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "node src/server",
+    "lint-fix": "./node_modules/.bin/eslint --fix src/*",
     "test": "NODE_ENV=test jest --detectOpenHandles --forceExit --unhandled-rejections=strict"
   },
   "author": "",
@@ -24,13 +25,6 @@
     "nanoid": "*"
   },
   "devDependencies": {
-    "eslint": "*",
-    "eslint-config-airbnb-base": "*",
-    "eslint-config-prettier": "*",
-    "eslint-plugin-import": "*",
-    "eslint-plugin-jest": "*",
-    "eslint-plugin-jest-formatting": "*",
-    "eslint-plugin-prettier": "*",
     "jest": "^25.1.0",
     "nodemon": "*",
     "prettier": "*",

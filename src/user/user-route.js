@@ -1,31 +1,46 @@
 const service = require("./user-service");
+const baseRoute = require("../common/baseRoute");
 
 function UserRoute(app) {
   app.routes
     .get("/register", async (req, res) => {
-      res.render("register.ejs", { notify: req.flash("notify") });
+      const notify = { notify: req.flash("notify") };
+      const render = { page: "register.ejs", notify };
+      baseRoute.renderByEnv(res, render, 200);
     })
 
     .post("/signup", async (req, res) => {
       const result = await service.signup(req.body);
       if (result.status === 200) {
-        //await res.redirect("/");
-        return res.status(result.status).json({message: result.message});
+        return baseRoute.redirectByEnv(res, result, "/");
       }
       req.flash("notify", result.message);
-      //await res.redirect("/register");
-      return res.status(result.status).json({message: result.message});
+      await baseRoute.redirectByEnv(res, result, "/register");
     })
 
-    .post("/login", async (req, res) => {
+    .get("/login", async (req, res) => {
+      const notify = { notify: req.flash("notify") };
+      const render = { page: "login.ejs", notify };
+      await baseRoute.renderByEnv(res, render, 200);
+    })
+
+    .post("/signin", async (req, res) => {
       const result = await service.login(req.body);
-      return res.status(result.status).json({message: result.message}); // Estou passando o ID do Banco aqui
+      if (result.status === 200) {
+        // await res.redirect("/");
+        return res.status(result.status).json({ message: result.message });
+      }
+      req.flash("notify", result.message);
+      // await res.redirect("/login");
+      return res.status(result.status).json({ message: result.message });
+
+      // return res.status(result.status).json({ message: result.message }); // Estou passando o ID do Banco aqui
     })
 
     .post("/delete", async (req, res) => {
-      const body = { ...req.body, isAdmin: req.headers.isadmin}
+      const body = { ...req.body, isAdmin: req.headers.isadmin };
       const result = await service.delete(body);
-      return res.status(result.status).json({message: result.message});
+      return res.status(result.status).json({ message: result.message });
     });
 
   return app.routes;
