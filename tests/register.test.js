@@ -102,3 +102,29 @@ describe("Login", () => {
     expect(res.body.message).toBe("Password is incorrect");
   });
 });
+
+describe("Simulated Develop Env Tests", () => {
+  test("Should response 200 to register page", async () => {
+    process.env.NODE_ENV = "development"
+    const res = await request.get("/register");
+    expect(res.status).toBe(200);
+  });
+
+  test("Should Create a New User", async () => {
+    process.env.NODE_ENV = "development"
+    const res = await request.post("/signup").send(validUser);
+    expect(res.status).toBe(302);
+  });
+
+  test("Should response 200 to login page", async () => {
+    process.env.NODE_ENV = "development"
+    const res = await request.get("/login");
+    expect(res.status).toBe(200);
+  });
+
+  test("Should response 200 to home page", async () => {
+    process.env.NODE_ENV = "development"
+    const res = await request.get("/");
+    expect(res.status).toBe(200);
+  });
+});
