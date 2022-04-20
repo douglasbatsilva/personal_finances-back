@@ -104,6 +104,10 @@ describe("Login", () => {
 });
 
 describe("Simulated Develop Env Tests", () => {
+  afterAll(async () => {
+    await request.post("/delete").send({ email: validUser.email });
+  });
+
   test("Should response 200 to register page", async () => {
     process.env.NODE_ENV = "development"
     const res = await request.get("/register");

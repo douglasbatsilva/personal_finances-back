@@ -27,14 +27,10 @@ function UserRoute(app) {
     .post("/signin", async (req, res) => {
       const result = await service.login(req.body);
       if (result.status === 200) {
-        // await res.redirect("/");
-        return res.status(result.status).json({ message: result.message });
+        return baseRoute.redirectByEnv(res, result, "/");
       }
       req.flash("notify", result.message);
-      // await res.redirect("/login");
-      return res.status(result.status).json({ message: result.message });
-
-      // return res.status(result.status).json({ message: result.message }); // Estou passando o ID do Banco aqui
+      await baseRoute.redirectByEnv(res, result, "/register");
     })
 
     .post("/delete", async (req, res) => {
