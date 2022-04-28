@@ -1,4 +1,5 @@
 const ManageDB = require("../infra/mongo");
+const manageDB = new ManageDB();
 
 class BaseMapper {
   constructor(collectionName) {
@@ -6,7 +7,7 @@ class BaseMapper {
   }
 
   getCollection(collectionName) {
-    return ManageDB.getDb(collectionName);
+    return manageDB.getDb(collectionName);
   }
 
   async insert(body) {

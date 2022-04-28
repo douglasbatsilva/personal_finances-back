@@ -16,7 +16,7 @@ class ManageDB {
     console.log("Database connection established");
   }
 
-  static getDb(collectionName) {
+  getDb(collectionName) {
     const dbName = client.db(DB_NAME);
     return dbName.collection(collectionName);
   }
