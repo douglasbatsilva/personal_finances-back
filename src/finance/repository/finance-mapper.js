@@ -6,4 +6,4 @@ class FinanceMapper extends baseMapper {
   }
 }
 
-module.exports = new FinanceMapper();
+module.exports = FinanceMapper;

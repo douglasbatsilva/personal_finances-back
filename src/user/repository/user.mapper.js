@@ -6,4 +6,4 @@ class UserMapper extends baseMapper {
   }
 }
 
-module.exports = new UserMapper();
+module.exports = UserMapper;

@@ -1,39 +1,30 @@
+require("dotenv").config();
 const express = require("express");
-const { Router } = require("express");
-const ManageDB = require("./infra/mongo");
 const cors = require("cors");
+const {createContainer} = require("awilix");
+const {loadControllers, scopePerRequest} = require('awilix-express')
+const ManageDB = require("./infra/mongo");
+const loadContainer = require("./container");
 
-class Server {
-  constructor() {
-    this.app = express();
-    this.middlewares();
-    this.databaseAndStart();
-    this.routes();
-  }
+const app = express();
+// this.middlewares();
 
-  async middlewares() {
-    this.app.use(express.urlencoded({ extended: true }));
-    this.app.use(express.json());
-    this.app.use(
-      cors({
+const container = createContainer()
+loadContainer(container);
+
+app.use(scopePerRequest(container));
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+app.use(
+    cors({
         origin: "*",
         methods: "*",
-      })
-    );
-  }
+    })
+);
 
-  async databaseAndStart() {
-    await ManageDB.connect(process.env.DB_NAME);
-    this.app.listen(3001, () => {
-      console.log("Server started on port 3001");
-    });
-  }
+app.use(loadControllers("./**/*.route.js", {cwd: __dirname}));
 
-  routes() {
-    this.app.routes = new Router();
-    this.app.use("/", require("./user/user-route")(this.app));
-    this.app.use("/finance", require("./finance/finance-route")(this.app));
-  }
-}
-
-module.exports = new Server().app;
+// await ManageDB.connect(process.env.DB_NAME);
+app.listen(3001, () => {
+    console.log("Server started on port 3001");
+});

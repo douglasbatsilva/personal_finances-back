@@ -7,7 +7,8 @@ class BaseMapper {
   }
 
   getCollection(collectionName) {
-    return manageDB.getDb(collectionName);
+    return "finance";
+    // return manageDB.getDb(collectionName);
   }
 
   async insert(body) {

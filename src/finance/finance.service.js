@@ -1,10 +1,10 @@
 const md5 = require("md5");
 const { nanoid } = require("nanoid");
 const BaseService = require("../common/baseService");
-const UserMapper = require("./repository/user-mapper");
-const { userRegisterSchema, userLoginSchema } = require("./user-request");
+const UserMapper = require("./repository/finance-mapper");
+const { userRegisterSchema, userLoginSchema } = require("./finance.request");
 
-class UserService extends BaseService {
+class FinanceService extends BaseService {
   async signup(bodyParam) {
     const body = bodyParam;
     const result = await this.validateRegistrationData(body);
@@ -110,4 +110,4 @@ class UserService extends BaseService {
   }
 }
 
-module.exports = new UserService();
+module.exports = FinanceService;

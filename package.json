@@ -13,6 +13,8 @@
   "dependencies": {
     "ajv": "*",
     "ajv-formats": "*",
+    "awilix": "^7.0.3",
+    "awilix-express": "^7.0.0",
     "bcrypt": "*",
     "cors": "^2.8.5",
     "dotenv": "*",
@@ -20,7 +22,8 @@
     "express-session": "*",
     "md5": "*",
     "mongodb": "*",
-    "nanoid": "*"
+    "mongoose": "^6.3.4",
+    "nanoid": "^3.3.4"
   },
   "devDependencies": {
     "jest": "^25.1.0",
