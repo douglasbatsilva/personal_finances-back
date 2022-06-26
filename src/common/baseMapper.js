@@ -1,13 +1,7 @@
-const ManageDB = require("../infra/mongo");
-const manageDB = new ManageDB();
-
 class BaseMapper {
-  constructor(collectionName) {
-    this.collection = this.getCollection(collectionName);
-  }
-
-  getCollection(collectionName) {
-    return manageDB.getDb(collectionName);
+  constructor(opts, modelName) {
+    const { db } = opts;
+    this.collection = db.collection(modelName);
   }
 
   async insert(body) {

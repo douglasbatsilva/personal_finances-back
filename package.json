@@ -13,14 +13,15 @@
   "dependencies": {
     "ajv": "*",
     "ajv-formats": "*",
-    "bcrypt": "*",
-    "cors": "^2.8.5",
+    "awilix": "*",
+    "awilix-express": "*",
+    "cors": "*",
     "dotenv": "*",
     "express": "*",
     "express-session": "*",
     "md5": "*",
     "mongodb": "*",
-    "nanoid": "*"
+    "nanoid": "^3.3.4"
   },
   "devDependencies": {
     "jest": "^25.1.0",
