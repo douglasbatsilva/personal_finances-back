@@ -1,7 +1,4 @@
-const md5 = require("md5");
-const { nanoid } = require("nanoid");
 const BaseService = require("../common/baseService");
-const UserMapper = require("./repository/user.mapper");
 const { userRegisterSchema, userLoginSchema } = require("./user.request");
 
 class UserService extends BaseService {
@@ -9,11 +6,11 @@ class UserService extends BaseService {
     const body = bodyParam;
     const result = await this.validateRegistrationData(body);
     if (result.isValid) {
-      body._id = nanoid(15);
-      body.password = md5(body.password);
+      body._id = this.nanoid(15);
+      body.password = this.getHash(body.password);
       delete body.rePassword;
 
-      await UserMapper.insert(body);
+      await this.repository.insert(body);
       return {
         message: "User created successfully",
         status: 200,
@@ -50,12 +47,12 @@ class UserService extends BaseService {
   }
 
   async searchUserByEmailOrUserName(email, userName) {
-    const existsUserName = await UserMapper.find({ userName });
+    const existsUserName = await this.repository.find({ userName });
     if (existsUserName.length > 0) {
       return { message: "This user name already exists" };
     }
 
-    const existsEmail = await UserMapper.find({ email });
+    const existsEmail = await this.repository.find({ email });
     if (existsEmail.length > 0) {
       return { message: "This user email already exists" };
     }
@@ -88,12 +85,12 @@ class UserService extends BaseService {
     const { user, password } = body;
 
     const query = { $or: [{ email: user }, { userName: user }] };
-    const existisUser = await UserMapper.find(query);
+    const existisUser = await this.repository.find(query);
     if (existisUser.length === 0) {
       return { message: "User not found", isValid: false, status: 404 };
     }
 
-    const passwordHash = md5(password);
+    const passwordHash = this.getHash(password);
     if (passwordHash !== existisUser[0].password) {
       return { message: "Password is incorrect", isValid: false };
     }
@@ -102,7 +99,7 @@ class UserService extends BaseService {
   }
 
   async delete(body) {
-    const { deletedCount } = await UserMapper.delete(body);
+    const { deletedCount } = await this.repository.delete(body);
     if (deletedCount === 0) {
       return { message: "User not found", status: 404 };
     }

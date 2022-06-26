@@ -1,31 +1,26 @@
-import {createController} from "awilix-express";
-import BaseController from "../common/baseController";
+const { createController } = require("awilix-express");
+const BaseController = require("../common/baseController");
 
-class UserRoute extends BaseController {
-    constructor({userService}) {
-        super();
-        this.userService = userService;
-    }
+class User extends BaseController {
+  async signup(req, res) {
+    const result = await this.service.signup(req.body);
+    return res.send(result);
+  }
 
-    async signup(req, res) {
-        const result = await this.userService.signup(req.body);
-        return res.send(result);
-    }
+  async signin(req, res) {
+    const result = await this.service.login(req.body);
+    return res.json(result);
+  }
 
-    async signin(req, res) {
-        const result = await this.userService.login(req.body);
-        return res.json(result);
-    }
-
-    async delete(req, res) {
-        const body = {...req.body, isAdmin: req.headers.isadmin};
-        const result = await this.userService.delete(body);
-        return res.send(result);
-    };
+  async delete(req, res) {
+    const body = { ...req.body, isAdmin: req.headers.isadmin };
+    const result = await this.service.delete(body);
+    return res.send(result);
+  }
 }
 
-module.exports = createController(UserRoute)
-    .prefix("user")
-    .post("/signup", "signup")
-    .post("/signin", "signin")
-    .post("/delete", "delete")
+module.exports = createController(User)
+  .prefix("/user")
+  .post("/signup", "signup")
+  .post("/signin", "signin")
+  .post("/delete", "delete");

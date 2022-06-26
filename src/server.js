@@ -1,30 +1,43 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const {createContainer} = require("awilix");
-const {loadControllers, scopePerRequest} = require('awilix-express')
-const ManageDB = require("./infra/mongo");
+const { createContainer } = require("awilix");
+const { loadControllers, scopePerRequest } = require("awilix-express");
 const loadContainer = require("./container");
 
-const app = express();
-// this.middlewares();
+class Server {
+  constructor() {
+    this.app = express();
+    this.container = createContainer();
+    this.middlewares();
+    this.routes();
+    this.start();
+  }
 
-const container = createContainer()
-loadContainer(container);
-
-app.use(scopePerRequest(container));
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
-app.use(
-    cors({
+  async middlewares() {
+    loadContainer(this.container);
+    this.app.use(scopePerRequest(this.container));
+    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(express.json());
+    this.app.use(
+      cors({
         origin: "*",
         methods: "*",
-    })
-);
+      })
+    );
+  }
 
-app.use(loadControllers("./**/*.route.js", {cwd: __dirname}));
+  routes() {
+    this.app.use(loadControllers("./**/*.route.js", { cwd: __dirname }));
+  }
 
-// await ManageDB.connect(process.env.DB_NAME);
-app.listen(3001, () => {
-    console.log("Server started on port 3001");
-});
+  start() {
+    if (process.env.NODE_ENV !== "test") {
+      this.app.listen(3001, async () => {
+        console.log("Server started on port 3001");
+      });
+    }
+  }
+}
+
+module.exports = new Server().app;

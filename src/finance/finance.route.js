@@ -1,16 +1,14 @@
-const service = require("./finance.service");
-const {Router} = require("express");
+const { createController } = require("awilix-express");
+const BaseController = require("../common/baseController");
 
-const router = new Router();
-
-function FinanceRoute() {
-  router
-    .post("/register", async (req, res) => {
-      const result = await service.signup(req.body);
-      return res.send(result);
-    })
-
-  return router;
+class Finance extends BaseController {
+  async post(req, res) {
+    const result = await this.service.register(req.body);
+    return res.send(result);
+  }
 }
 
-module.exports = FinanceRoute;
+module.exports = createController(Finance)
+  .prefix("/finance")
+  .post("/register", "post");
+

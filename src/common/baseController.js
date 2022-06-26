@@ -1,17 +1,14 @@
 class BaseController {
-    constructor(opts) {
-        this.context = opts.context;
-        this.scope = opts.scope;
-        this.validator = opts.validator;
-        this.state = opts.state;
-        this.service = null;
+  constructor(opts) {
+    this.scope = opts.scope;
+    this.service = null;
 
-        const baseServiceName = `${this.constructor.name.toLowerCase()}Service`;
+    const baseServiceName = `${this.constructor.name.toLowerCase()}Service`;
 
-        if (this.scope.hasRegistration(`${baseServiceName}`)) {
-            this.service = this.scope.resolve(`${baseServiceName}`);
-        }
+    if (this.scope.hasRegistration(`${baseServiceName}`)) {
+      this.service = this.scope.resolve(`${baseServiceName}`);
     }
+  }
 }
 
 module.exports = BaseController;

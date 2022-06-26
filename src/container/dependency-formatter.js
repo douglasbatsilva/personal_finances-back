@@ -10,7 +10,8 @@ const formatName = (name) => {
 
   resourceName += namespace.replace(/\w/, (a) => a.toUpperCase());
 
-  console.log(`${resourceName} successfully registered`);
+  if (process.env.NODE_ENV !== "test")
+    console.log(`• ${resourceName} successfully registered`);
   return resourceName;
 };
 

@@ -1,8 +1,8 @@
 const baseMapper = require("../../common/baseMapper");
 
 class FinanceMapper extends baseMapper {
-  constructor() {
-    super("finances");
+  constructor(opts) {
+    super(opts, "finances");
   }
 }
 

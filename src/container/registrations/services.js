@@ -2,7 +2,8 @@ const { asValue, Lifetime } = require("awilix");
 const formatName = require("../dependency-formatter");
 
 const registerServices = (container) => {
-  console.log("\n", "Registering Services & Requests...", "\n");
+  if (process.env.NODE_ENV !== "test")
+    console.log("\n", "Registering Services & Requests...", "\n");
   container.loadModules(
     [
       [
@@ -13,6 +14,7 @@ const registerServices = (container) => {
         },
       ],
       "../../**/!(base*)*.service.js",
+      "../../**/!(base*)*.mapper.js",
     ],
     {
       cwd: __dirname,
